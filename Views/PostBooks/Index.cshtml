@@ -1,0 +1,43 @@
+﻿@model IEnumerable<GuestBook.Models.Book>
+
+@{
+    ViewData["Title"] = "刀劍神域的世界";
+
+    var Manager = Context.Session.GetString("Manager");
+    if (Manager!=null)
+        Layout = "_Layout";
+}
+
+<h1 class="text-center shadow p-4">@ViewData["Title"]</h1>
+
+<p class="d-grid gap-2">
+    <a asp-action="Create" class="btn btn-primary btn-lg">我要留言</a>
+</p>
+
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        <div class="card shadow mb-4 col-lg-6">
+            @if (item.Photo != null)
+            {
+                <img src="@Url.Action("GetImage","Books",new{gid=item.GId})" class="card-img-top" alt="...">
+            }
+            <div class="card-body">
+                <h3 class="card-title"><strong>@Html.DisplayFor(modelitem => item.Title)</strong></h3>
+                <p class="card-text">@Html.Raw(@item.Description.ToString().Replace("\r\n","<br>"))</p>
+
+                <div class="card-footer">
+                    <p class="text-end">
+                        @Html.DisplayFor(modelitem => item.Author) 於 @Html.DisplayFor(modelitem => item.TimeStamp) 發佈
+                        | <a asp-action="Display" asp-route-id="@item.GId">看更多...</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+<p class="d-grid gap-2">
+    <a asp-action="Create" class="btn btn-primary btn-lg">我要留言</a>
+</p>

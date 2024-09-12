@@ -1,0 +1,58 @@
+﻿@model IEnumerable<GuestBook.Models.Book>
+
+
+@{
+    ViewData["Title"] = "Home Page";
+
+    var Manager = Context.Session.GetString("Manager");
+    if (Manager != null)
+        Layout = "_Layout";
+
+    string a = "active";
+
+    int i = 0;
+}
+
+
+
+<div class="mt-4 p-5 bg-light text-white shadow rounded jumbotron">
+    <h1 class="display-4 text-white shadowwhite"><strong>歡迎來到刀劍神域的世界</strong></h1>
+    <br />
+    <h3 class="text-white shadowwhite">
+        <strong>歡迎來到刀劍神域的入口，請選擇您的角色</strong>
+    </h3>
+    <h4 class="text-white ">
+        <span class="shadowwhite"> 請點我進入刀劍神域的世界</span> <a asp-action="Index" asp-controller="PostBooks" class="btn btn-warning btn-lg">傳送門</a>
+    </h4>
+</div>
+<hr />
+
+
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        @for (int j = 0; j < Model.Count(); j++)
+        {
+           a = j == 0 ? "active" : "";
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@j" class="@a" aria-current="true" aria-label="Slide 1"></button>
+        }
+    </div>
+    <div class="carousel-inner">
+
+        @foreach (var item in Model)
+        {
+            a = i == 0 ? "active" : "";
+            <div class="carousel-item @a" data-bs-interval="2000">
+                <img src="@Url.Action("GetImage","Books",new{gid=item.GId})" class="d-block w-100" alt="...">
+            </div>
+            i++;
+        }
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>

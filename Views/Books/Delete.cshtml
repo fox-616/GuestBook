@@ -1,0 +1,48 @@
+﻿@model GuestBook.Models.Book
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "_Layout";
+}
+
+<h1 class="alert alert-danger text-center">刪除留言</h1>
+<h3 class="alert alert-warning text-center">您確定要刪除底下的留言嗎？</h3>
+
+
+<div class="card shadow">
+     @if (Model.Photo != null)
+    {
+        <img src="@Url.Action("GetImage",new{gid=Model.GId})
+        " class="card-img-top" alt="...">
+    }
+    <div class="card-body">
+        <h3 class="card-title"><strong>@Html.DisplayFor(model => model.Title)</strong></h3>
+        <p class="card-text">@Html.Raw(Model.Description.ToString().Replace("\r\n", "<br>"))</p>
+        @* <p class="text-end fs-6">@Html.DisplayFor(model => model.Author) 於 @Html.DisplayFor(model => model.TimeStamp) 發佈</p>
+        <a href="#" class="btn btn-danger ">刪除留言</a> *@
+        <div class="text-end">
+            <p>@Html.DisplayFor(model => model.Author) 於 @Html.DisplayFor(model => model.TimeStamp) 發佈</p>
+            @* <a href="#" class="btn btn-danger">確認刪除此筆留言</a> *@
+
+            <form asp-action="Delete" class="d-grid gap-2">
+                <input type="hidden" asp-for="GId" />
+                <input type="submit" value="確定刪除此筆留言" class="btn btn-danger" onclick="return confirm('您確定要刪除此筆留言及其底下的所有回覆留言嗎？此動作將無法回復，您還確定要刪除嗎？')" />
+            </form>
+
+
+        </div>
+    </div>
+</div>
+<hr>
+    @* @foreach (var item in ViewBag.rebook)
+    {
+    <p>@item.Description</p>
+    <p class="text-end fs-6">@item.Author 於 @item.TimeStamp 發佈</p>
+
+    } *@
+
+    @await Component.InvokeAsync("VCReBooks", new { gid = Model.GId })
+
+
+<a asp-action="Index">回留言板首頁</a>
+
